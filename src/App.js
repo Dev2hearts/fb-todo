@@ -4,6 +4,7 @@ import List from "./components/List";
 import Form from "./components/Form";
 
 const App = () => {
+    console.log("App 랜더링")
     // 더미 데이터 state 변수
     const [todoData, setTodoData] = useState([
         { id: 1, title: "할일 1", completed: true },

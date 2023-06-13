@@ -1,4 +1,6 @@
-const ListItem = ({item, todoData,setTodoData}) => {
+import React from "react";
+const ListItem = ({ item, todoData, setTodoData }) => {
+    console.log("ListItem 렌더링", item);
     const btnStyle = {
         color: "#fff",
         float: " right",
