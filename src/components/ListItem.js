@@ -12,7 +12,6 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     const getStyle = _completed => {
         return {
             padding: "10px",
-            borderBottom: "1px dotted #ccc",
             textDecoration: _completed ? "line-through" : "none",
         };
     };
@@ -38,22 +37,26 @@ const ListItem = ({ item, todoData, setTodoData }) => {
         setTodoData(newTodoData);
     };
     return (
-        <div style={getStyle(item.completed)}>
-            {/* defaultChecked : 체크박스에 기본체크 상태 설정 */}
-            <input
-                type="checkbox"
-                defaultChecked={item.completed}
-                onChange={() => handleCompletChange(item.id)}
-            ></input>
-            {item.title}
-            <button
-                style={btnStyle}
-                onClick={() => {
-                    handleClick(item.id);
-                }}
-            >
-                X
-            </button>
+        <div className="flex items-center justify-between w-full mb-2 px-4 py-1 text-gray-600 bg-gray-100 border rounded">
+            <div className="items-center" style={getStyle(item.completed)}>
+                {/* defaultChecked : 체크박스에 기본체크 상태 설정 */}
+                <input
+                    type="checkbox"
+                    defaultChecked={item.completed}
+                    onChange={() => handleCompletChange(item.id)}
+                ></input>
+                {item.title}
+                </div>
+                <div className="flex items-center">
+                <button
+                    style={btnStyle}
+                    onClick={() => {
+                        handleClick(item.id);
+                    }}
+                >
+                    X
+                </button>
+            </div>
         </div>
     );
 };

@@ -1,4 +1,7 @@
 @charset "utf-8";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
     margin: 0;
@@ -7,22 +10,21 @@
     outline-style: none;
 }
 
-a{
+a {
     text-decoration: none;
 }
 img {
     vertical-align: center;
     border: 0;
 }
-ul{
+ul {
     list-style: none;
 }
-html{
+html {
     font-size: 16px;
-
 }
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
     color: #000;
     line-height: 1.4;
