@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 const ListItem = ({ item, todoData, setTodoData }) => {
@@ -8,6 +8,7 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     const [isEdit, setIsEdit] = useState(false);
     // 편집 상태 타이틀 설정 state
     const [editTitle, setEditTitle] = useState(item.title);
+
     const getStyle = _completed => {
         return {
             padding: "10px",
@@ -24,6 +25,7 @@ const ListItem = ({ item, todoData, setTodoData }) => {
         setTodoData(newTodoData);
         // 로컬스토리지 저장
         localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+        // axios delete 호출 fbtodolist 삭제하기
     };
     const handleEditClick = () => {
         setIsEdit(true);
@@ -44,6 +46,7 @@ const ListItem = ({ item, todoData, setTodoData }) => {
         setTodoData(newTodoData);
         // 로컬스토리지 저장
         localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+        // axios patch/put 호출 fbtodolist 수정하기
         setIsEdit(false);
     };
     const handleCompletChange = _id => {
@@ -59,6 +62,7 @@ const ListItem = ({ item, todoData, setTodoData }) => {
         setTodoData(newTodoData);
         // 로컬스토리지 저장
         localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+        // axios patch/put 호출 fbtodolist 수정하기
     };
     if (isEdit) {
         // 편집중
@@ -68,8 +72,8 @@ const ListItem = ({ item, todoData, setTodoData }) => {
                     <input
                         className="w-full px-3 py-2 mr-3 text-gray-500 rounded"
                         type="text"
-                        value={editTitle}
-                        onChange={handleEditChange}
+                        value={editTitle || ""}
+                        onChange={e => handleEditChange(e)}
                     />
                 </div>
                 <div className="flex items-center">
@@ -94,7 +98,10 @@ const ListItem = ({ item, todoData, setTodoData }) => {
         // 일반상태
         return (
             <div className="flex items-center justify-between w-full mb-2 px-4 py-1 text-gray-600 bg-gray-100 border rounded">
-                <div className="items-center flex" style={getStyle(item.completed)}>
+                <div
+                    className="items-center flex"
+                    style={getStyle(item.completed)}
+                >
                     {/* defaultChecked : 체크박스에 기본체크 상태 설정 */}
                     <input
                         type="checkbox"
