@@ -1,16 +1,40 @@
 import { useState } from "react";
 import { LoginDiv } from "../style/UserCss";
 import { useNavigate } from "react-router-dom";
-const Login = () => {
+import firebase from "../firebase.js";
+const Login = ({setFBName,setFBEmail,setFBUid}) => {
     // Link, NavLink, useNavigate = 페이지 이동
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     // 로그인 기능
-    const handleLogin = e => {
-        console.log(e.target);
+    const handleLogin = async e => {
+        e.preventDefault();
         // FireBase 로그인 시도
+        try {
+            await firebase.auth().signInWithEmailAndPassword(email, password);
+            console.log("로그인 성공");
+            const user = await firebase.auth().currentUser;
+            console.log(user);
+            setFBName(user.displayName);
+            setFBEmail(user.email);
+            setFBUid(user.uid);
+            navigate("/");
+        } catch (error) {
+            console.log(error.code);
+            if (error.code === "auth/invalid-email") {
+                alert("올바른 이메일 형식이 아닙니다.");
+            } else if (error.code === "auth/wrong-password") {
+                alert("올바르지 않은 비밀번호 입니다.");
+            } else if (error.code === "auth/user-not-found") {
+                alert("가입되지 않은 사용자 입니다.");
+            } else if (error.code === "auth/missing-email") {
+                alert("이메일을 찾을수 없습니다.");
+            } else {
+                alert("로그인에 실패했습니다.");
+            }
+        }
     };
     return (
         <div className="p-6 m-auto mt-5 shadow rounded-md bg-white">
@@ -26,9 +50,7 @@ const Login = () => {
                         type="email"
                         required
                         value={email}
-                        onChange={e => {
-                            setEmail(e.target.value);
-                        }}
+                        onChange={e => setEmail(e.target.value)}
                     />
                     <label htmlFor="">password</label>
                     <input
@@ -37,9 +59,7 @@ const Login = () => {
                         maxLength={16}
                         required
                         value={password}
-                        onChange={e => {
-                            setPassword(e.target.value);
-                        }}
+                        onChange={e => setPassword(e.target.value)}
                     />
                     <div className="flex justify-center gap-5 w-full">
                         <button

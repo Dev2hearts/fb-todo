@@ -1,7 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import firebase from "../firebase";
 
-const Header = () => {
+const Header = ({
+    fbName,
+    fbEmail,
+    fbUid,
+    setFBName,
+    setFBEmail,
+    setFBUid,
+}) => {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        firebase.auth().signOut();
+        setFBName("");
+        setFBEmail("");
+        setFBUid("");
+        navigate("/");
+    };
     return (
         <header className="p-6 bg-black">
             <div className="flex items-center justify-between">
@@ -19,7 +35,7 @@ const Header = () => {
                     </li>
                     <li>
                         <Link
-                            to="/todo"
+                            to={fbUid ? "/todo" : "/login"}
                             className="text-white hover:text-green-400"
                         >
                             Todo
@@ -35,9 +51,18 @@ const Header = () => {
                     </li>
                 </ul>
                 <div className="flex items-center justify-center gap-4">
-                    <Link to="/login" className="text-white">
-                        Login
-                    </Link>
+                    {fbUid ? (
+                        <div className="text-white">
+                            {fbName} {fbEmail} {fbUid}
+                            <button onClick={handleLogout}>Logout</button>
+                            <Link to="/mypage">마이페이지</Link>
+                        </div>
+                    ) : (
+                        <Link to="/login" className="text-white">
+                            Login
+                        </Link>
+                    )}
+
                     <Link to="/signup" className="text-white">
                         SignUp
                     </Link>

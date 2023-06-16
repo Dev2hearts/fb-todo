@@ -1,8 +1,10 @@
 import List from "../components/List";
 import Form from "../components/Form";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Todo = () => {
+const Todo = ({ fbName, fbUid, fbEmial }) => {
+    const navigate = useNavigate();
     // 로컬 데이터
     const initTodoData = localStorage.getItem("fbTodoData")
         ? JSON.parse(localStorage.getItem("fbTodoData"))
@@ -15,9 +17,15 @@ const Todo = () => {
         localStorage.setItem("fbTodoData", JSON.stringify([]));
     };
 
-    useEffect ( () => {
-        // axios get 호출 fbtodolist 자료 받기
-    },[])
+    // uid 없는 경우 로그인으로 바로 보내기
+    useEffect(() => {
+        if (!fbUid) {
+            navigate("/login");
+        }
+    }, []);
+
+    // axios get 호출 fbtodolist 자료 받기
+    useEffect(() => {}, []);
 
     return (
         <div className="flex items-start mt-5 justify-center w-full">
