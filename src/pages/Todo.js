@@ -2,19 +2,19 @@ import List from "../components/List";
 import Form from "../components/Form";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getTodo,deleteAll } from "../axios/axios";
 
 const Todo = ({ fbName, fbUid, fbEmial }) => {
     const navigate = useNavigate();
-    // 로컬 데이터
-    const initTodoData = localStorage.getItem("fbTodoData")
-        ? JSON.parse(localStorage.getItem("fbTodoData"))
-        : [];
+    // jsonServer 데이터 사용
+    const initTodoData = [];
     // 초기데이터
     const [todoData, setTodoData] = useState(initTodoData);
     const handleRemoveClick = () => {
         setTodoData([]);
         // 로컬 스토리지 초기화
-        localStorage.setItem("fbTodoData", JSON.stringify([]));
+        // localStorage.setItem("fbTodoData", JSON.stringify([]));
+        deleteAll();
     };
 
     // uid 없는 경우 로그인으로 바로 보내기
@@ -25,7 +25,9 @@ const Todo = ({ fbName, fbUid, fbEmial }) => {
     }, []);
 
     // axios get 호출 fbtodolist 자료 받기
-    useEffect(() => {}, []);
+    useEffect(() => {
+        getTodo(setTodoData);
+    }, []);
 
     return (
         <div className="flex items-start mt-5 justify-center w-full">
@@ -44,7 +46,12 @@ const Todo = ({ fbName, fbUid, fbEmial }) => {
                 {/* 할일 목록 */}
                 <List todoData={todoData} setTodoData={setTodoData} />
                 {/* 할일 추가 */}
-                <Form todoData={todoData} setTodoData={setTodoData} />
+                <Form
+                    todoData={todoData}
+                    setTodoData={setTodoData}
+                    fbEmial={fbEmial}
+                    fbName={fbName}
+                />
             </div>
         </div>
     );
