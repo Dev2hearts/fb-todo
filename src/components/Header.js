@@ -43,6 +43,14 @@ const Header = ({
                     </li>
                     <li>
                         <Link
+                            to="/schedule"
+                            className="text-white hover:text-green-400"
+                        >
+                            Schedule
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
                             to="/about"
                             className="text-white hover:text-green-400"
                         >

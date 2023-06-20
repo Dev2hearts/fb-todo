@@ -57,7 +57,6 @@ const Login = ({ setFBName, setFBEmail, setFBUid }) => {
     const tailLayout = {
         wrapperCol: { offset: 8, span: 16 },
     };
-
     return (
         <div className="p-6 m-auto mt-5 shadow rounded-md bg-white">
             <h2>Login</h2>
