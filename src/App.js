@@ -11,6 +11,7 @@ import SignUp from "./pages/SignUp";
 import Todo from "./pages/Todo";
 import Mypage from "./pages/Mypage";
 import Schedule from "./pages/Schedule";
+import Upload from "./pages/Upload";
 
 const App = () => {
     // 추후에 Reudx&Recoil state 로 관리 필요
@@ -69,6 +70,7 @@ const App = () => {
                         }
                     ></Route>
                     <Route path="/schedule" element={<Schedule />}></Route>
+                    <Route path="/upload" element={<Upload />}></Route>
                     <Route path="*" element={<NotFound />}></Route>
                 </Routes>
             </div>

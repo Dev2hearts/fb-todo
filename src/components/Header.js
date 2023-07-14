@@ -51,6 +51,14 @@ const Header = ({
                     </li>
                     <li>
                         <Link
+                            to="/upload"
+                            className="text-white hover:text-green-400"
+                        >
+                            Upload
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
                             to="/about"
                             className="text-white hover:text-green-400"
                         >
