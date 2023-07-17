@@ -78,7 +78,7 @@ const SignUp = () => {
                     <label htmlFor="">Password</label>
                     <input
                         type="password"
-                        minLength={8}
+                        minLength={6}
                         maxLength={16}
                         required
                         value={pw}
@@ -86,7 +86,7 @@ const SignUp = () => {
                     />
                     <label
                         type="password"
-                        minLength={8}
+                        minLength={6}
                         maxLength={16}
                         htmlFor=""
                         required

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import firebase from "../firebase";
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Header = ({
     fbName,
@@ -10,12 +11,15 @@ const Header = ({
     setFBEmail,
     setFBUid,
 }) => {
+    const { user } = useAuthContext();
+    const { logout } = useLogout();
     const navigate = useNavigate();
     const handleLogout = () => {
-        firebase.auth().signOut();
-        setFBName("");
-        setFBEmail("");
-        setFBUid("");
+        // firebase.auth().signOut();
+        // setFBName("");
+        // setFBEmail("");
+        // setFBUid("");
+        logout();
         navigate("/");
     };
     return (
@@ -66,8 +70,12 @@ const Header = ({
                         </Link>
                     </li>
                 </ul>
+
                 <div className="flex items-center justify-center gap-4">
-                    {fbUid ? (
+                    <button className="text-white" onClick={handleLogout}>
+                        Logout
+                    </button>
+                    {user ? (
                         <div className="text-white">
                             {fbName} {fbEmail} {fbUid}
                             <button onClick={handleLogout}>Logout</button>
