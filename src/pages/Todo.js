@@ -2,12 +2,12 @@ import List from "../components/List";
 import Form from "../components/Form";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTodo,deleteAll } from "../axios/axios";
+import { getTodo, deleteAll } from "../axios/axios";
 import Loading from "../components/Loading";
 
 const Todo = ({ fbName, fbUid, fbEmial }) => {
     // 로딩 처리
-    const [isLoading,setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate();
     // jsonServer 데이터 사용
@@ -23,21 +23,20 @@ const Todo = ({ fbName, fbUid, fbEmial }) => {
 
     // uid 없는 경우 로그인으로 바로 보내기
     useEffect(() => {
-        if (!fbUid) {
-            navigate("/login");
-        }
+        // if (!fbUid) {
+        //     navigate("/login");
+        // }
     }, []);
 
     // axios get 호출 fbtodolist 자료 받기
     useEffect(() => {
-
         getTodo(setTodoData, setIsLoading);
     }, []);
 
     return (
         <div className="flex items-start mt-5 justify-center w-full">
             {/* { isLoading && <Loading/>} */}
-                        <div className="w-4/5 p-6 bg-white rounded-[6px] shadow">
+            <div className="w-4/5 p-6 bg-white rounded-[6px] shadow">
                 <div className="flex justify-between mb-3">
                     <h1 className="text-center w-3/4 text-2xl text-cyan-400">
                         FireBase Todo-List

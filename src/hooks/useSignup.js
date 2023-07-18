@@ -41,7 +41,6 @@ export const useSignup = () => {
             // 프로필 업데이트 성공
             // AuthContext 업데이트
             // dispatch(action)
-            console.log("dispatch 실행 !!!!!!!!!!");
             dispatch({ type: "login", payload: user });
             setError(null);
             // 연결 후 작업 완료

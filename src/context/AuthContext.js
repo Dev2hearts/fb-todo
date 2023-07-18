@@ -1,5 +1,6 @@
-import { createContext, useReducer } from "react";
-
+import { createContext, useEffect, useReducer } from "react";
+import { appAuth } from "../firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
 // FireBase 인증 Context 를 생성
 const AuthContext = createContext();
 
@@ -22,6 +23,12 @@ const authReducer = (state, action) => {
                 ...state,
                 user: null,
             };
+        case "isAuthReady":
+            return {
+                ...state,
+                user: action.payload,
+                isAuthReady: true,
+            };
         default:
             // 그대로 돌려준다.
             return state;
@@ -30,9 +37,16 @@ const authReducer = (state, action) => {
 // Context 를 구독(Subscirbe) 하도록 Provider 를 생성
 const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, {
-        user: null,
+        user: null, // 사용자 정보
         error: null,
+        isAuthReady: false, // 로그인 상태 체크
     });
+    // FB 인증 웹브라우저 새로 고침 처리
+    useEffect(() => {
+        onAuthStateChanged(appAuth, user => {
+            dispatch({ type: "isAuthReady", payload: user });
+        });
+    }, []);
     return (
         <AuthContext.Provider value={{ ...state, dispatch }}>
             {children}

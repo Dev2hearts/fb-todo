@@ -67,9 +67,9 @@ const Mypage = ({ fbName, fbEmail, fbUid, setFBName, setFBEmail,setFBUid }) => {
     };
 
     useEffect(() => {
-        if (!fbUid) {
-            navigate("/");
-        }
+        // if (!fbUid) {
+        //     navigate("/");
+        // }
     });
 
     return (
