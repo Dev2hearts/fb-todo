@@ -9,44 +9,13 @@ const Login = () => {
     const navigate = useNavigate();
     const onFinish = values => {
         login(values.email, values.password);
-        // try {
-        //     await firebase
-        //         .auth()
-        //         .signInWithEmailAndPassword(values.email, values.password);
-        //     console.log("로그인 성공");
-        //     const user = await firebase.auth().currentUser;
-        //     console.log(user);
-        //     setFBName(user.displayName);
-        //     setFBEmail(user.email);
-        //     setFBUid(user.uid);
-        //     navigate("/");
-        // } catch (error) {
-        //     console.log(error.code);
-        //     if (error.code === "auth/invalid-email") {
-        //         setIsModalOpen(true);
-        //         setModalMessage("올바른 이메일 형식이 아닙니다.");
-        //     } else if (error.code === "auth/wrong-password") {
-        //         setIsModalOpen(true);
-        //         setModalMessage("올바르지 않은 비밀번호 입니다.");
-        //     } else if (error.code === "auth/user-not-found") {
-        //         setIsModalOpen(true);
-        //         setModalMessage("가입되지 않은 사용자 입니다.");
-        //     } else if (error.code === "auth/missing-email") {
-        //         setIsModalOpen(true);
-        //         setModalMessage("이메일을 찾을수 없습니다.");
-        //     } else {
-        //         setIsModalOpen(true);
-        //         setModalMessage("로그인에 실패했습니다.");
-        //     }
-        //     showModal();
-        // }
     };
     const onFinishFailed = errorInfo => {
-        console.log("Failed:", errorInfo);
-        const arr = errorInfo.errorFields;
-        arr.forEach(item => {
-            console.log(item.errors)
-        });
+        // console.log("Failed:", errorInfo);
+        // const arr = errorInfo.errorFields;
+        // arr.forEach(item => {
+        //     console.log(item.errors)
+        // });
     };
     // AntD Modal 기능
     const [isModalOpen, setIsModalOpen] = useState(false);

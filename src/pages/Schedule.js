@@ -42,15 +42,12 @@ const Schedule = () => {
     ];
     const handleClickDay = (value, event) => {
         // moment(value).format("YYYY-MM-DD")
-        // console.log(event.target);
-        // console.log(event.currentTarget);
         const div = event.currentTarget.querySelector("div");
         if (div !== null) {
             console.log(div.dataset.gogo);
             const 제목 = div.dataset.gogoTitle;
             const 날짜 = div.dataset.gogoDay;
             const 이미지 = div.dataset.gogoImgpath;
-            console.log(`${제목} ${날짜} ${이미지} 있구나`);
         }
 
         showModal();
@@ -61,16 +58,11 @@ const Schedule = () => {
         // date 를 우리가 가지고 있는 서버 정보와
         // 비교를 위해서 포맷을 YYYY-MM-DD 로 변경한다.
         let 날짜 = moment(date).format("YYYY-MM-DD");
-        // console.log(date);
-        // console.log(날짜);
-        // console.log(view);
         let result = 서버정보.find(item => {
             if (item.day === 날짜) {
-                // console.log("날짜가 같아요~~~ 화면에 내용 출력");
                 return item;
             }
         });
-        // console.log("result : ", result);
         if (result) {
             return (
                 // js 의 data 어트리뷰트에 정보 담기

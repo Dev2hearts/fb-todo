@@ -1,77 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { MyPageDiv } from "../style/UserCss";
 import { useNavigate } from "react-router-dom";
-import firebase from "../firebase.js";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useUpdateNickName } from "../hooks/useUpdateNickName";
+import { useUpdateEmail } from "../hooks/useUpdateEmail";
+import { useUpdatePassword } from "../hooks/useUpdatePassword";
+import { useDeleteUser } from "../hooks/useDeleteUser";
 // firebase 연동
 
-const Mypage = ({ fbName, fbEmail, fbUid, setFBName, setFBEmail,setFBUid }) => {
+const Mypage = () => {
+    const { user } = useAuthContext();
+    const { updateNickName } = useUpdateNickName();
+    const { updateEM } = useUpdateEmail();
+    const { updatePW } = useUpdatePassword();
+    const { deleteID } = useDeleteUser();
     const navigate = useNavigate();
-    const [nickName, setNickName] = useState(fbName);
-    const [email, setEmail] = useState(fbEmail);
+    const [nickName, setNickName] = useState("");
+    const [email, setEmail] = useState("");
     const [pw, setPw] = useState("");
     const [pwConfirm, setPwConfirm] = useState("");
-
-    // FireBase의 사용자 정보 객체
-    const user = firebase.auth().currentUser;
-
-    const handlerNickName = async e => {
-        e.preventDefault();
-        await user.updateProfile({ displayName: nickName });
-        setNickName(nickName);
-        setFBName(nickName);
-        alert("NicName 정보를 변경하였습니다.");
-    };
-    const handlerEmail = async e => {
-        e.preventDefault();
-        try {
-            await user.updateEmail(email);
-            setEmail(email);
-            setFBEmail(email);
-            alert("NicEmail 정보를 변경하였습니다.");
-        } catch (error) {
-            if (error.code == "auth/email-already-in-use") {
-                alert("이미 존재하는 email 입니다.");
-            } else if (error.code == "auth/invalid-email") {
-                alert("email 형식이 맞지 않습니다.");
-            } else {
-                alert("이메일을 확인해 주세요.");
-            }
-        }
-    };
-    const handlerPassword = async e => {
-        e.preventDefault();
-        try {
-            await user.updatePassword(pw);
-            setPw(pw)
-            alert("NicName 정보를 변경하였습니다.");
-        } catch (error) {
-            if (error.code === "auto/weak-password") {
-                alert("비밀번호가 너무 짧습니다.");
-            } else {
-                alert("비밀번호를 다시 입력해 주세요.");
-            }
-        }
-    };
-    const handlerDelete = async e => {
-        e.preventDefault();
-        try {
-            await user.delete();
-            alert("탈퇴를 완료 하였습니다.");
-            setFBEmail("");
-            setFBName("");
-            setFBUid("");
-            navigate("/");
-        } catch (error) {
-            console.log(error.code);
-        }
-    };
-
+    // AuthContex 에 state 의 user 를 출력
     useEffect(() => {
-        // if (!fbUid) {
-        //     navigate("/");
-        // }
-    });
+        setNickName(user.displayName);
+        setEmail(user.email);
+    }, []);
 
+    const handlerNickName = e => {
+        e.preventDefault();
+        updateNickName(nickName);
+    };
+    const handlerEmail = e => {
+        e.preventDefault();
+        updateEM(email);
+    };
+    const handlerPassword = e => {
+        e.preventDefault();
+        if (pw === pwConfirm) {
+            updatePW(pw);
+        } else {
+            alert("비밀번호를 확인 해주세요");
+        }
+    };
+    const handlerDelete = e => {
+        e.preventDefault();
+        deleteID();
+        navigate("/");
+    };
     return (
         <div className="p-6 m-auto mt-5 shadow rounded-md bg-white">
             <h2>Mypage</h2>

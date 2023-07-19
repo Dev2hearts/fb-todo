@@ -4,7 +4,7 @@ import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const Header = () => {
-    const { user,isAuthReady } = useAuthContext();
+    const { user } = useAuthContext();
     const { logout } = useLogout();
     const navigate = useNavigate();
     const handleLogout = () => {
@@ -70,20 +70,21 @@ const Header = () => {
 
                 <div className="flex items-center justify-center gap-4">
                     {user ? (
-                        <div className="text-white">
+                        <div className="text-white flex items-center justify-center gap-4">
                             {user.displayName} {user.Email} {user.uid}
                             <button onClick={handleLogout}>Logout</button>
                             <Link to="/mypage">마이페이지</Link>
                         </div>
                     ) : (
-                        <Link to="/login" className="text-white">
-                            Login
-                        </Link>
+                        <div className="flex items-center justify-center gap-4">
+                            <Link to="/login" className="text-white">
+                                Login
+                            </Link>
+                            <Link to="/signup" className="text-white">
+                                SignUp
+                            </Link>
+                        </div>
                     )}
-
-                    <Link to="/signup" className="text-white">
-                        SignUp
-                    </Link>
                 </div>
             </div>
         </header>

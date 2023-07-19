@@ -3,7 +3,6 @@ import Form from "../components/Form";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTodo, deleteAll } from "../axios/axios";
-import Loading from "../components/Loading";
 
 const Todo = ({ fbName, fbUid, fbEmial }) => {
     // 로딩 처리
@@ -20,13 +19,6 @@ const Todo = ({ fbName, fbUid, fbEmial }) => {
         // localStorage.setItem("fbTodoData", JSON.stringify([]));
         deleteAll();
     };
-
-    // uid 없는 경우 로그인으로 바로 보내기
-    useEffect(() => {
-        // if (!fbUid) {
-        //     navigate("/login");
-        // }
-    }, []);
 
     // axios get 호출 fbtodolist 자료 받기
     useEffect(() => {

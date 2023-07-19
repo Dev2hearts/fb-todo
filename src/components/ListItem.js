@@ -4,7 +4,6 @@ import { useState } from "react";
 import { saveTodo,completeChange,deleteTodo } from "../axios/axios";
 
 const ListItem = ({ item, todoData, setTodoData }) => {
-    // console.log("ListItem 렌더링", item);
 
     // 편집 상태 설정 state
     const [isEdit, setIsEdit] = useState(false);

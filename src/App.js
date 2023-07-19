@@ -49,12 +49,6 @@ const App = () => {
                                 element={
                                     user ? 
                                     <Mypage
-                                        fbName={fbName}
-                                        fbEmail={fbEmail}
-                                        fbUid={fbUid}
-                                        setFBName={setFBName}
-                                        setFBEmail={setFBEmail}
-                                        setFBUid={setFBUid}
                                     />
                                     : <Navigate to="/login"/>
                                 }

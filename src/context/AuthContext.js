@@ -23,6 +23,16 @@ const authReducer = (state, action) => {
                 ...state,
                 user: null,
             };
+        case "updateName":
+            return {
+                ...state,
+                user: action.payload,
+            };
+        case "updateEmail":
+            return {
+                ...state,
+                user: action.payload,
+            };
         case "isAuthReady":
             return {
                 ...state,

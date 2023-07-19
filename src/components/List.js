@@ -2,7 +2,6 @@ import ListItem from "./ListItem";
 import React from "react";
 
 const List = ({ todoData, setTodoData }) => {
-    console.log("List 렌더링");
     return (
         <div>
             {/* 할일 목록 */}
