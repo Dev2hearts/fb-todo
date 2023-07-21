@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { MyPageDiv } from "../style/UserCss";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../hooks/useAuthContext";
-import { useUpdateNickName } from "../hooks/useUpdateNickName";
-import { useUpdateEmail } from "../hooks/useUpdateEmail";
-import { useUpdatePassword } from "../hooks/useUpdatePassword";
-import { useDeleteUser } from "../hooks/useDeleteUser";
+import {
+    useAuthContext,
+    useUpdateNickName,
+    useUpdateEmail,
+    useUpdatePassword,
+    useDeleteUser,
+} from "../hooks/useFirebase";
 // firebase 연동
 
 const Mypage = () => {
@@ -44,7 +46,6 @@ const Mypage = () => {
     const handlerDelete = e => {
         e.preventDefault();
         deleteID();
-        navigate("/");
     };
     return (
         <div className="p-6 m-auto mt-5 shadow rounded-md bg-white">

@@ -1,15 +1,12 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useLogout } from "../hooks/useLogout";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { Link } from "react-router-dom";
+import { useAuthContext, useLogout } from "../hooks/useFirebase";
 
 const Header = () => {
     const { user } = useAuthContext();
     const { logout } = useLogout();
-    const navigate = useNavigate();
     const handleLogout = () => {
         logout();
-        navigate("/");
     };
     return (
         <header className="p-6 bg-black">
@@ -71,7 +68,7 @@ const Header = () => {
                 <div className="flex items-center justify-center gap-4">
                     {user ? (
                         <div className="text-white flex items-center justify-center gap-4">
-                            {user.displayName} {user.Email} {user.uid}
+                            {user.displayName} {user.email}
                             <button onClick={handleLogout}>Logout</button>
                             <Link to="/mypage">마이페이지</Link>
                         </div>

@@ -6,17 +6,11 @@ const AuthContext = createContext();
 
 // Context 관리 리듀서함수
 const authReducer = (state, action) => {
-    console.log("리듀서 함수: ", action);
     switch (action.type) {
         case "login":
             return {
                 ...state,
                 user: action.payload,
-            };
-        case "error":
-            return {
-                ...state,
-                error: action.payload,
             };
         case "logout":
             return {
@@ -39,6 +33,11 @@ const authReducer = (state, action) => {
                 user: action.payload,
                 isAuthReady: true,
             };
+        case "isError" :
+            return {
+                ...state,
+                errMessage: action.payload
+            }
         default:
             // 그대로 돌려준다.
             return state;
@@ -48,7 +47,7 @@ const authReducer = (state, action) => {
 const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, {
         user: null, // 사용자 정보
-        error: null,
+        errMessage: "",
         isAuthReady: false, // 로그인 상태 체크
     });
     // FB 인증 웹브라우저 새로 고침 처리

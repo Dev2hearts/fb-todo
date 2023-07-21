@@ -1,14 +1,16 @@
 import List from "../components/List";
 import Form from "../components/Form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTodo, deleteAll } from "../axios/axios";
+import { useAuthContext } from "../hooks/useFirebase";
+import { useCollection } from "../hooks/useCollection";
 
 const Todo = ({ fbName, fbUid, fbEmial }) => {
-    // 로딩 처리
-    const [isLoading, setIsLoading] = useState(true);
-
-    const navigate = useNavigate();
+    // 사용자별 등롣을 위해 user를 참조
+    const { user } = useAuthContext();
+    // fb의 데이터를 출력
+    const { documents, error } = useCollection("todo", ["uid", "==" , user.uid]);
     // jsonServer 데이터 사용
     const initTodoData = [];
     // 초기데이터
@@ -20,14 +22,8 @@ const Todo = ({ fbName, fbUid, fbEmial }) => {
         deleteAll();
     };
 
-    // axios get 호출 fbtodolist 자료 받기
-    useEffect(() => {
-        getTodo(setTodoData, setIsLoading);
-    }, []);
-
     return (
         <div className="flex items-start mt-5 justify-center w-full">
-            {/* { isLoading && <Loading/>} */}
             <div className="w-4/5 p-6 bg-white rounded-[6px] shadow">
                 <div className="flex justify-between mb-3">
                     <h1 className="text-center w-3/4 text-2xl text-cyan-400">
@@ -41,13 +37,14 @@ const Todo = ({ fbName, fbUid, fbEmial }) => {
                     </button>
                 </div>
                 {/* 할일 목록 */}
-                <List todoData={todoData} setTodoData={setTodoData} />
+                {error && <strong>{error}</strong>}
+                {documents && <List todoData={documents} />}
+                {/* <List todoData={todoData} setTodoData={setTodoData} /> */}
                 {/* 할일 추가 */}
                 <Form
                     todoData={todoData}
                     setTodoData={setTodoData}
-                    fbEmial={fbEmial}
-                    fbName={fbName}
+                    uid={user.uid}
                 />
             </div>
         </div>

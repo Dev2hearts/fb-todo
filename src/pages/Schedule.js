@@ -44,7 +44,6 @@ const Schedule = () => {
         // moment(value).format("YYYY-MM-DD")
         const div = event.currentTarget.querySelector("div");
         if (div !== null) {
-            console.log(div.dataset.gogo);
             const 제목 = div.dataset.gogoTitle;
             const 날짜 = div.dataset.gogoDay;
             const 이미지 = div.dataset.gogoImgpath;

@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input, Modal } from "antd";
-import { useLogin } from "../hooks/useLogin";
+import { useLogin } from "../hooks/useFirebase";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const { login } = useLogin();
-    // Link, NavLink, useNavigate = 페이지 이동
     const navigate = useNavigate();
     const onFinish = values => {
         login(values.email, values.password);
