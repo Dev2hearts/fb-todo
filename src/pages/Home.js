@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import anime from "animejs/lib/anime.es";
-import KakaoMap from "../components/KakaoMap";
 
 const Home = () => {
     // html 태그를 참조해서 활용하고 싶을 때
@@ -21,7 +20,6 @@ const Home = () => {
                 <h1 ref={h1}>Home</h1>
             </div>
             <div>
-                <KakaoMap />
             </div>
         </>
     );

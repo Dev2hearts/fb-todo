@@ -13,16 +13,26 @@ import Mypage from "./pages/Mypage";
 import Schedule from "./pages/Schedule";
 import Upload from "./pages/Upload";
 import TodoChart from "./pages/TodoChart";
-import { useAuthContext } from "./hooks/useFirebase";
+// import { useAuthContext } from "./hooks/useFirebase";
 import { Modal } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
+import { appAuth } from "./firebase/config";
 
 const App = () => {
-    // 추후에 Reudx&Recoil state 로 관리 필요
-    const [fbName, setFBName] = useState("");
-    const [fbEmail, setFBEmail] = useState("");
-    const [fbUid, setFBUid] = useState("");
-    const { isAuthReady, user, errMessage, dispatch } = useAuthContext();
+    // 1. store에 저장된 state를 읽어온다.
+    const { isAuthReady, user, errMessage } = useSelector(state => state);
+    // 2. store 에 저장된 state를 업데이트 (action 만들어서 전달)
+    const dispatch = useDispatch();
 
+    // FB 인증 웹브라우저 새로 고침 처리
+    useEffect(() => {
+        onAuthStateChanged(appAuth, user => {
+            dispatch({ type: "isAuthReady", payload: user });
+        });
+    }, []);
+    // 추후에 Reudx&Recoil state 로 관리 필요
+    // const { isAuthReady, user, errMessage, dispatch } = useAuthContext();
     const error = msg => {
         Modal.error({
             title: "FireBase Error Modal",
@@ -31,16 +41,15 @@ const App = () => {
             okButtonProps: { style: { background: "red" } },
         });
     };
-
+    const handleOk = () => {
+        dispatch({ type: "isError", payload: "" });
+    };
     useEffect(() => {
         if (errMessage !== "") {
             error(errMessage);
         }
     }, [errMessage]);
 
-    const handleOk = () => {
-        dispatch({ type: "isError", payload: "" });
-    };
     return (
         <>
             {isAuthReady ? (
@@ -65,15 +74,7 @@ const App = () => {
                             <Route
                                 path="/todo"
                                 element={
-                                    user ? (
-                                        <Todo
-                                            fbName={fbName}
-                                            fbEmail={fbEmail}
-                                            fbUid={fbUid}
-                                        />
-                                    ) : (
-                                        <Navigate to="/login" />
-                                    )
+                                    user ? <Todo /> : <Navigate to="/login" />
                                 }
                             ></Route>
                             <Route

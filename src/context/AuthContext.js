@@ -33,11 +33,11 @@ const authReducer = (state, action) => {
                 user: action.payload,
                 isAuthReady: true,
             };
-        case "isError" :
+        case "isError":
             return {
                 ...state,
-                errMessage: action.payload
-            }
+                errMessage: action.payload,
+            };
         default:
             // 그대로 돌려준다.
             return state;

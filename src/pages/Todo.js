@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { getTodo, deleteAll } from "../axios/axios";
 import { useAuthContext } from "../hooks/useFirebase";
 import { useCollection } from "../hooks/useCollection";
+import { useSelector } from "react-redux";
 
 const Todo = ({ fbName, fbUid, fbEmial }) => {
     // 사용자별 등롣을 위해 user를 참조
-    const { user } = useAuthContext();
+    // const { user } = useAuthContext();
+    const { user } = useSelector(state => state);
     // fb의 데이터를 출력
-    const { documents, error } = useCollection("todo", ["uid", "==" , user.uid]);
+    const { documents, error } = useCollection("todo", ["uid", "==", user.uid]);
     // jsonServer 데이터 사용
     const initTodoData = [];
     // 초기데이터

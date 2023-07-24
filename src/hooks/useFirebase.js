@@ -11,17 +11,20 @@ import {
 } from "firebase/auth";
 import { appAuth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 // AuthContext Hook
-export const useAuthContext = () => {
-    const context = useContext(AuthContext);
-    return context;
-};
+// export const useAuthContext = () => {
+//     const context = useContext(AuthContext);
+//     return context;
+// };
+
 // 사용자 로그인 훅
 export const useLogin = () => {
     const [error, setError] = useState(null);
     const [isPending, setIsPending] = useState(false);
-    const { dispatch } = useAuthContext();
+    // const { dispatch } = useAuthContext();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const login = async (email, password) => {
         setError(null);
@@ -59,7 +62,8 @@ export const useLogin = () => {
 export const useLogout = () => {
     const [error, setError] = useState(null);
     const [isPending, setIsPending] = useState(false);
-    const { dispatch } = useAuthContext();
+    // const { dispatch } = useAuthContext();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const logout = async () => {
         setError(null);
@@ -79,8 +83,8 @@ export const useLogout = () => {
 // 회원가입 훅
 export const useSignup = () => {
     // authContext 데이터 전달
-    const { dispatch } = useAuthContext();
-
+    // const { dispatch } = useAuthContext();
+    const dispatch = useDispatch();
     // 사용자의 상태의 따라 웹브라우저 라우터 이동
     const navigate = useNavigate();
     // 서버의 에러 상태를 보관
@@ -141,7 +145,8 @@ export const useSignup = () => {
 export const useUpdateEmail = () => {
     const [error, setError] = useState(null);
     const [isPending, setIspending] = useState(false);
-    const { dispatch } = useAuthContext();
+    // const { dispatch } = useAuthContext();
+    const dispatch = useDispatch();
     const updateEM = async email => {
         setError(null);
         setIspending(true);
@@ -160,7 +165,8 @@ export const useUpdateEmail = () => {
 
 // 닉네임 변경 훅
 export const useUpdateNickName = () => {
-    const { dispatch } = useAuthContext();
+    // const { dispatch } = useAuthContext();
+    const dispatch = useDispatch();
     const [error, setError] = useState(null);
     const [isPending, setIspending] = useState(false);
     const updateNickName = async displayName => {

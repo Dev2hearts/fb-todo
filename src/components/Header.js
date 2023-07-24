@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext, useLogout } from "../hooks/useFirebase";
+import { useSelector } from "react-redux";
 
 const Header = () => {
-    const { user } = useAuthContext();
+    // const { user } = useAuthContext();
+    const { user } = useSelector(state => state);
     const { logout } = useLogout();
     const handleLogout = () => {
         logout();
