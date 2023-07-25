@@ -514,11 +514,11 @@ const Upload = () => {
     return (
         <div className="p-6 mt-5 shadow rounded bg-white">
             <h2>이미지 업로드 기능 관련</h2>
-            {/* <UploadFetch /> */}
+            <UploadFetch />
             {/* <UploadPreview /> */}
             {/* <UploadAxios /> */}
             {/* <UploadJson /> */}
-            <UploadMulti />
+            {/* <UploadMulti /> */}
         </div>
     );
 };
