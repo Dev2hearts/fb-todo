@@ -12,6 +12,14 @@ import {
 import { appAuth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import {
+    FB_DELETE_USER,
+    FB_IS_ERROR,
+    FB_LOGIN,
+    FB_LOGOUT,
+    FB_UPDATE_EMAIL,
+    FB_UPDATE_NAME,
+} from "../modules/fbReducer";
 
 // AuthContext Hook
 // export const useAuthContext = () => {
@@ -36,7 +44,7 @@ export const useLogin = () => {
                 password,
             );
             const user = userCredential.user;
-            dispatch({ type: "login", payload: user });
+            dispatch({ type: FB_LOGIN, payload: user });
             navigate("/");
         } catch (err) {
             console.log(err.message);
@@ -52,7 +60,7 @@ export const useLogin = () => {
             } else {
                 errMessage = "로그인이 실패하였습니다.";
             }
-            dispatch({ type: "isError", payload: errMessage });
+            dispatch({ type: FB_IS_ERROR, payload: errMessage });
         }
     };
     return { error, isPending, login };
@@ -71,7 +79,7 @@ export const useLogout = () => {
         // FB 로그아웃 API
         try {
             await signOut(appAuth);
-            dispatch({ type: "logout" });
+            dispatch({ type: FB_LOGOUT });
             navigate("/");
         } catch (err) {
             console.log(err);
@@ -116,7 +124,7 @@ export const useSignup = () => {
             // 프로필 업데이트 성공
             // AuthContext 업데이트
             // dispatch(action)
-            dispatch({ type: "login", payload: user });
+            dispatch({ type: FB_LOGIN, payload: user });
             setError(null);
             // 연결 후 작업 완료
             setIsPending(false);
@@ -133,7 +141,7 @@ export const useSignup = () => {
             } else if (err.code == "auth/weak-password") {
                 errMessage = "The password is too weak.";
             }
-            dispatch({ type: "isError", payload: errMessage });
+            dispatch({ type: FB_IS_ERROR, payload: errMessage });
         }
     };
 
@@ -152,7 +160,7 @@ export const useUpdateEmail = () => {
         setIspending(true);
         try {
             await updateEmail(appAuth.currentUser, email);
-            dispatch({ type: "updateEmail", payload: appAuth.currentUser });
+            dispatch({ type: FB_UPDATE_EMAIL, payload: appAuth.currentUser });
             setIspending(false);
         } catch (err) {
             setIspending(false);
@@ -177,7 +185,7 @@ export const useUpdateNickName = () => {
                 displayName: displayName,
             });
             setIspending(false);
-            dispatch({ type: "updateName", payload: appAuth.currentUser });
+            dispatch({ type: FB_UPDATE_NAME, payload: appAuth.currentUser });
         } catch (err) {
             setIspending(false);
             setError(err.message);
@@ -212,12 +220,14 @@ export const useDeleteUser = () => {
     const [error, setError] = useState(null);
     const [isPending, setIspending] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const deleteID = async () => {
         setError(null);
         setIspending(true);
         try {
             await deleteUser(appAuth.currentUser);
             setIspending(false);
+            dispatch({ type: FB_DELETE_USER });
             navigate("/");
         } catch (err) {
             setIspending(false);

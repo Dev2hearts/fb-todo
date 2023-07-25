@@ -7,6 +7,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 // 데이터 베이스
 import { Timestamp, getFirestore } from "firebase/firestore";
+// 스토리지 (이미지 업로드)
+import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,6 +27,8 @@ const appAuth = getAuth(app);
 // 데이터 베이스
 const appFireStore = getFirestore(app);
 const timestamp = Timestamp;
+// 스토리지
+const storage = getStorage();
 
 // 외부에서 활용하도록 내보냄
-export { appAuth, appFireStore, timestamp };
+export { appAuth, appFireStore, timestamp, storage };

@@ -18,6 +18,7 @@ import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { appAuth } from "./firebase/config";
+import { FB_IS_AUTH_READY, FB_IS_ERROR } from "./modules/fbReducer";
 
 const App = () => {
     // 1. store에 저장된 state를 읽어온다.
@@ -28,7 +29,7 @@ const App = () => {
     // FB 인증 웹브라우저 새로 고침 처리
     useEffect(() => {
         onAuthStateChanged(appAuth, user => {
-            dispatch({ type: "isAuthReady", payload: user });
+            dispatch({ type: FB_IS_AUTH_READY, payload: user });
         });
     }, []);
     // 추후에 Reudx&Recoil state 로 관리 필요
@@ -42,7 +43,7 @@ const App = () => {
         });
     };
     const handleOk = () => {
-        dispatch({ type: "isError", payload: "" });
+        dispatch({ type: FB_IS_ERROR, payload: "" });
     };
     useEffect(() => {
         if (errMessage !== "") {
