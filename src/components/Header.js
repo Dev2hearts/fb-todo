@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAuthContext, useLogout } from "../hooks/useFirebase";
+import { useLogout } from "../hooks/useFirebase";
 import { useSelector } from "react-redux";
 
 const Header = () => {
     // const { user } = useAuthContext();
-    const { user } = useSelector(state => state);
+    const { displayName, email, uid } = useSelector(state => state.fbAuth);
     const { logout } = useLogout();
     const handleLogout = () => {
         logout();
@@ -27,7 +27,7 @@ const Header = () => {
                     </li>
                     <li>
                         <Link
-                            to={user ? "/todo" : "/login"}
+                            to={uid ? "/todo" : "/login"}
                             className="text-white hover:text-green-400"
                         >
                             Todo
@@ -68,9 +68,9 @@ const Header = () => {
                 </ul>
 
                 <div className="flex items-center justify-center gap-4">
-                    {user ? (
+                    {uid ? (
                         <div className="text-white flex items-center justify-center gap-4">
-                            {user.displayName} {user.email}
+                            {displayName} {email}
                             <button onClick={handleLogout}>Logout</button>
                             <Link to="/mypage">마이페이지</Link>
                         </div>

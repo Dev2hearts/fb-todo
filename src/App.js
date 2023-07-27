@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import Header from "./components/Header";
 
@@ -18,18 +18,25 @@ import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { appAuth } from "./firebase/config";
-import { FB_IS_AUTH_READY, FB_IS_ERROR } from "./modules/fbReducer";
+// import { FB_IS_AUTH_READY, FB_IS_ERROR } from "./modules/fbReducer";
+import { isAuthReadyFB, isErrorFB } from "./reducers/fbAuthSlice";
 
 const App = () => {
     // 1. store에 저장된 state를 읽어온다.
-    const { isAuthReady, user, errMessage } = useSelector(state => state);
+    const { isAuthReady, uid, errMessage } = useSelector(state => state.fbAuth);
     // 2. store 에 저장된 state를 업데이트 (action 만들어서 전달)
     const dispatch = useDispatch();
 
     // FB 인증 웹브라우저 새로 고침 처리
     useEffect(() => {
         onAuthStateChanged(appAuth, user => {
-            dispatch({ type: FB_IS_AUTH_READY, payload: user });
+            dispatch(
+                isAuthReadyFB({
+                    uid: user && user.uid,
+                    displayName: user && user.displayName,
+                    email: user && user.email,
+                }),
+            );
         });
     }, []);
     // 추후에 Reudx&Recoil state 로 관리 필요
@@ -43,7 +50,7 @@ const App = () => {
         });
     };
     const handleOk = () => {
-        dispatch({ type: FB_IS_ERROR, payload: "" });
+        dispatch(isErrorFB(""));
     };
     useEffect(() => {
         if (errMessage !== "") {
@@ -68,20 +75,20 @@ const App = () => {
                             <Route
                                 path="/login"
                                 element={
-                                    user ? <Navigate to="/home" /> : <Login />
+                                    uid ? <Navigate to="/home" /> : <Login />
                                 }
                             ></Route>
                             <Route path="/signup" element={<SignUp />}></Route>
                             <Route
                                 path="/todo"
                                 element={
-                                    user ? <Todo /> : <Navigate to="/login" />
+                                    uid ? <Todo /> : <Navigate to="/login" />
                                 }
                             ></Route>
                             <Route
                                 path="/mypage"
                                 element={
-                                    user ? <Mypage /> : <Navigate to="/login" />
+                                    uid ? <Mypage /> : <Navigate to="/login" />
                                 }
                             ></Route>
                             <Route

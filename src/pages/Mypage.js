@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { MyPageDiv } from "../style/UserCss";
 import { useNavigate } from "react-router-dom";
 import {
-    useAuthContext,
     useUpdateNickName,
     useUpdateEmail,
     useUpdatePassword,
@@ -13,20 +12,20 @@ import { useSelector } from "react-redux";
 
 const Mypage = () => {
     // const { user } = useAuthContext();
-    const { user } = useSelector(state => state);
+    const { displayName, email } = useSelector(state => state.fbAuth);
     const { updateNickName } = useUpdateNickName();
     const { updateEM } = useUpdateEmail();
     const { updatePW } = useUpdatePassword();
     const { deleteID } = useDeleteUser();
     const navigate = useNavigate();
     const [nickName, setNickName] = useState("");
-    const [email, setEmail] = useState("");
+    const [userEmail, setUserEmail] = useState("");
     const [pw, setPw] = useState("");
     const [pwConfirm, setPwConfirm] = useState("");
     // AuthContex 에 state 의 user 를 출력
     useEffect(() => {
-        setNickName(user.displayName);
-        setEmail(user.email);
+        setNickName(displayName);
+        setUserEmail(email);
     }, []);
 
     const handlerNickName = e => {
@@ -35,7 +34,7 @@ const Mypage = () => {
     };
     const handlerEmail = e => {
         e.preventDefault();
-        updateEM(email);
+        updateEM(userEmail);
     };
     const handlerPassword = e => {
         e.preventDefault();
@@ -80,8 +79,8 @@ const Mypage = () => {
                         <input
                             type="email"
                             required
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
+                            value={userEmail}
+                            onChange={e => setUserEmail(e.target.value)}
                         />
                         <button
                             className="border rounded px-3 py-2 shadow"

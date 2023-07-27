@@ -1,18 +1,17 @@
 import List from "../components/List";
 import Form from "../components/Form";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { getTodo, deleteAll } from "../axios/axios";
-import { useAuthContext } from "../hooks/useFirebase";
+// import { useAuthContext } from "../hooks/useFirebase";
 import { useCollection } from "../hooks/useCollection";
 import { useSelector } from "react-redux";
 
-const Todo = ({ fbName, fbUid, fbEmial }) => {
+const Todo = () => {
     // 사용자별 등롣을 위해 user를 참조
     // const { user } = useAuthContext();
-    const { user } = useSelector(state => state);
+    const { uid } = useSelector(state => state.fbAuth);
     // fb의 데이터를 출력
-    const { documents, error } = useCollection("todo", ["uid", "==", user.uid]);
+    const { documents, error } = useCollection("todo", ["uid", "==", uid]);
     // jsonServer 데이터 사용
     const initTodoData = [];
     // 초기데이터
@@ -46,7 +45,7 @@ const Todo = ({ fbName, fbUid, fbEmial }) => {
                 <Form
                     todoData={todoData}
                     setTodoData={setTodoData}
-                    uid={user.uid}
+                    uid={uid}
                 />
             </div>
         </div>

@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useState } from "react";
+// import { AuthContext } from "../context/AuthContext";
 import {
     signInWithEmailAndPassword,
     signOut,
@@ -12,14 +12,22 @@ import {
 import { appAuth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+// import {
+//     FB_DELETE_USER,
+//     FB_IS_ERROR,
+//     FB_LOGIN,
+//     FB_LOGOUT,
+//     FB_UPDATE_EMAIL,
+//     FB_UPDATE_NAME,
+// } from "../modules/fbReducer";
 import {
-    FB_DELETE_USER,
-    FB_IS_ERROR,
-    FB_LOGIN,
-    FB_LOGOUT,
-    FB_UPDATE_EMAIL,
-    FB_UPDATE_NAME,
-} from "../modules/fbReducer";
+    deleteUserFB,
+    isErrorFB,
+    loginFB,
+    logoutFB,
+    updateEmailFB,
+    updateNameFB,
+} from "../reducers/fbAuthSlice";
 
 // AuthContext Hook
 // export const useAuthContext = () => {
@@ -44,7 +52,14 @@ export const useLogin = () => {
                 password,
             );
             const user = userCredential.user;
-            dispatch({ type: FB_LOGIN, payload: user });
+
+            dispatch(
+                loginFB({
+                    displayName: user.displayName,
+                    email: user.email,
+                    uid: user.uid,
+                }),
+            );
             navigate("/");
         } catch (err) {
             console.log(err.message);
@@ -60,7 +75,7 @@ export const useLogin = () => {
             } else {
                 errMessage = "로그인이 실패하였습니다.";
             }
-            dispatch({ type: FB_IS_ERROR, payload: errMessage });
+            dispatch(isErrorFB(errMessage));
         }
     };
     return { error, isPending, login };
@@ -79,10 +94,12 @@ export const useLogout = () => {
         // FB 로그아웃 API
         try {
             await signOut(appAuth);
-            dispatch({ type: FB_LOGOUT });
+            dispatch(logoutFB());
             navigate("/");
         } catch (err) {
             console.log(err);
+            setError(err.message);
+            dispatch(isErrorFB(error));
         }
     };
     return { error, isPending, logout };
@@ -124,7 +141,7 @@ export const useSignup = () => {
             // 프로필 업데이트 성공
             // AuthContext 업데이트
             // dispatch(action)
-            dispatch({ type: FB_LOGIN, payload: user });
+            dispatch(loginFB({uid:user.uid,email:user.email,displayName:user.displayName}));
             setError(null);
             // 연결 후 작업 완료
             setIsPending(false);
@@ -141,7 +158,7 @@ export const useSignup = () => {
             } else if (err.code == "auth/weak-password") {
                 errMessage = "The password is too weak.";
             }
-            dispatch({ type: FB_IS_ERROR, payload: errMessage });
+            dispatch(isErrorFB(err.Message));
         }
     };
 
@@ -160,12 +177,13 @@ export const useUpdateEmail = () => {
         setIspending(true);
         try {
             await updateEmail(appAuth.currentUser, email);
-            dispatch({ type: FB_UPDATE_EMAIL, payload: appAuth.currentUser });
+            dispatch(updateEmailFB({email:appAuth.currentUser.email}));
             setIspending(false);
         } catch (err) {
             setIspending(false);
             setError(err.message);
             console.log(err.message);
+            dispatch(isErrorFB(error));
         }
     };
     return { error, isPending, updateEM };
@@ -185,11 +203,12 @@ export const useUpdateNickName = () => {
                 displayName: displayName,
             });
             setIspending(false);
-            dispatch({ type: FB_UPDATE_NAME, payload: appAuth.currentUser });
+            dispatch(updateNameFB({displayName:appAuth.currentUser.displayName}));
         } catch (err) {
             setIspending(false);
             setError(err.message);
             console.log(err.message);
+            dispatch(isErrorFB(error));
         }
     };
     return { error, isPending, updateNickName };
@@ -198,6 +217,7 @@ export const useUpdateNickName = () => {
 // 비밀번호 변경 훅
 export const useUpdatePassword = () => {
     const [error, setError] = useState(null);
+    const dispatch = useDispatch();
     const [isPending, setIspending] = useState(false);
     const updatePW = async pw => {
         setError(null);
@@ -209,6 +229,7 @@ export const useUpdatePassword = () => {
         } catch (err) {
             setIspending(false);
             setError(err.message);
+            dispatch(isErrorFB(error));
             console.log(err.message);
         }
     };
@@ -227,11 +248,12 @@ export const useDeleteUser = () => {
         try {
             await deleteUser(appAuth.currentUser);
             setIspending(false);
-            dispatch({ type: FB_DELETE_USER });
+            dispatch(deleteUserFB());
             navigate("/");
         } catch (err) {
             setIspending(false);
-            setError(err);
+            setError(err.message);
+            dispatch(isErrorFB(error));
             console.log(err);
         }
     };
