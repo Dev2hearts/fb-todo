@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { Button, Checkbox, Form, Input, Modal } from "antd";
-import { useLogin } from "../hooks/useFirebase";
+// import { useLogin } from "../hooks/useFirebase";
 import { useNavigate } from "react-router-dom";
+import { asyncLoginFetch } from "../reducers/actions";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
-    const { login } = useLogin();
+    // const { login } = useLogin();
+
+    // dispatch 를 통해서 액션을 만들거나/담거나,
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const onFinish = values => {
-        login(values.email, values.password);
+        // login(values.email, values.password);
+        dispatch(asyncLoginFetch({email: values.email, password:values.password}));
     };
     const onFinishFailed = errorInfo => {
         // console.log("Failed:", errorInfo);

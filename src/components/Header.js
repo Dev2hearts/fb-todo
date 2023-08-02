@@ -1,14 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useLogout } from "../hooks/useFirebase";
-import { useSelector } from "react-redux";
+// import { useLogout } from "../hooks/useFirebase";
+import { useDispatch, useSelector } from "react-redux";
+import { asyncLogoutFetch } from "../reducers/actions";
 
 const Header = () => {
     // const { user } = useAuthContext();
     const { displayName, email, uid } = useSelector(state => state.fbAuth);
-    const { logout } = useLogout();
+    // const { logout } = useLogout();
+    const dispatch = useDispatch();
     const handleLogout = () => {
-        logout();
+        dispatch(asyncLogoutFetch());
     };
     return (
         <header className="p-6 bg-black">
